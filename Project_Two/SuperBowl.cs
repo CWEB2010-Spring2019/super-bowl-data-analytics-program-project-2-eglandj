@@ -9,40 +9,40 @@ namespace Project_Two
     class SuperBowl
     {
         public DateTime Date { get; set; }
-        string SuperBowlNumber { get; set; }
-        int Attendance { get; set; }
-        string WinningQB { get; set; }
-        string WinningCoach { get; set; }
-        string WinningTeam { get; set; }
-        int WinningPoints { get; set; }
-        string LosingQB { get; set; }
-        string LosingCoach { get; set; }
-        string LosingTeam { get; set; }
-        int LosingPoints { get; set; }
-        string MVP { get; set; }
-        string Stadium { get; set; }
-        string City { get; set; }
-        string State { get; set; }
+        public string SuperBowlNumber { get; set; }
+        public int Attendance { get; set; }
+        public string WinningQB { get; set; }
+        public string WinningCoach { get; set; }
+        public string WinningTeam { get; set; }
+        public int WinningPoints { get; set; }
+        public string LosingQB { get; set; }
+        public string LosingCoach { get; set; }
+        public string LosingTeam { get; set; }
+        public int LosingPoints { get; set; }
+        public string MVP { get; set; }
+        public string Stadium { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
 
         public static SuperBowl FromCsv(string csvLine)
         {
-            string[] values = csvLine.Split(',');
+            string[] information = csvLine.Split(',');
             SuperBowl superBowlInfo = new SuperBowl();
-            superBowlInfo.Date = Convert.ToDateTime(values[0]);
-            superBowlInfo.SuperBowlNumber = Convert.ToString(values[1]);
-            superBowlInfo.Attendance = Convert.ToInt32(values[2]);
-            superBowlInfo.WinningQB = Convert.ToString(values[3]);
-            superBowlInfo.WinningCoach = Convert.ToString(values[4]);
-            superBowlInfo.WinningTeam = Convert.ToString(values[5]);
-            superBowlInfo.WinningPoints = Convert.ToInt32(values[6]);
-            superBowlInfo.LosingQB = Convert.ToString(values[7]);
-            superBowlInfo.LosingCoach = Convert.ToString(values[8]);
-            superBowlInfo.LosingTeam = Convert.ToString(values[9]);
-            superBowlInfo.LosingPoints = Convert.ToInt32(values[10]);
-            superBowlInfo.MVP = Convert.ToString(values[11]);
-            superBowlInfo.Stadium = Convert.ToString(values[12]);
-            superBowlInfo.City = Convert.ToString(values[13]);
-            superBowlInfo.State = Convert.ToString(values[14]);
+            superBowlInfo.Date = Convert.ToDateTime(information[0]);
+            superBowlInfo.SuperBowlNumber = Convert.ToString(information[1]);
+            superBowlInfo.Attendance = Convert.ToInt32(information[2]);
+            superBowlInfo.WinningQB = Convert.ToString(information[3]);
+            superBowlInfo.WinningCoach = Convert.ToString(information[4]);
+            superBowlInfo.WinningTeam = Convert.ToString(information[5]);
+            superBowlInfo.WinningPoints = Convert.ToInt32(information[6]);
+            superBowlInfo.LosingQB = Convert.ToString(information[7]);
+            superBowlInfo.LosingCoach = Convert.ToString(information[8]);
+            superBowlInfo.LosingTeam = Convert.ToString(information[9]);
+            superBowlInfo.LosingPoints = Convert.ToInt32(information[10]);
+            superBowlInfo.MVP = Convert.ToString(information[11]);
+            superBowlInfo.Stadium = Convert.ToString(information[12]);
+            superBowlInfo.City = Convert.ToString(information[13]);
+            superBowlInfo.State = Convert.ToString(information[14]);
             return superBowlInfo;
         }
     }
