@@ -16,17 +16,7 @@ namespace Project_Two
                                            .Skip(1)
                                            .Select(v => SuperBowl.FromCsv(v))
                                            .ToList();
-            for (int i = 0; i < information.Count; i++)
-            {
-                CenterConsoleWrite(10, information[i].SuperBowlNumber);
-                CenterConsoleWrite(10, Convert.ToString(information[i].Date.Year));
-                CenterConsoleWrite(30, information[i].WinningTeam);
-                CenterConsoleWrite(30, information[i].WinningQB);
-                CenterConsoleWrite(20, information[i].WinningCoach);
-                CenterConsoleWrite(30, information[i].MVP);
-                CenterConsoleWrite(4, Convert.ToString(information[i].WinningPoints - information[i].LosingPoints));
-                Console.WriteLine();
-            }
+            TextFile();
             /*foreach (SuperBowl bowl in information)
             {
                 Console.WriteLine(bowl.Date.Year);
@@ -52,6 +42,15 @@ namespace Project_Two
             {
                 Console.Write(" " + spacer + text + spacer);
             }
+        }
+        public static void TextFile()
+        {
+            string filePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "SuperBowl.txt");
+            Console.WriteLine(filePath);
+            TextWriter sw = new StreamWriter(filePath);
+            Console.ReadKey();
         }
     }
 }
