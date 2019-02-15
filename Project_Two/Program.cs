@@ -17,7 +17,9 @@ namespace Project_Two
                                            .Skip(1)
                                            .Select(v => SuperBowl.FromCsv(v))
                                            .ToList();
-            TextFile(information);
+            Greeting(out string filePath);
+            FileCheck(filePath);
+            SuperBowlWinners(information, filePath);
             /*foreach (SuperBowl bowl in information)
             {
                 Console.WriteLine(bowl.Date.Year);
@@ -26,35 +28,22 @@ namespace Project_Two
             }
             Console.ReadKey();*/
         }
-        public static void TextFile(List<SuperBowl> information)
+       static void Greeting(out string filePath)
         {
-            string filePath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                "SuperBowl.txt");
-            /*Console.WriteLine(filePath);
-            TextWriter sw = new StreamWriter(filePath);
-            Console.ReadKey();*/
+            Console.WriteLine("Type a name for the text file you will be creating.\nDO NOT add an extension behind it");
+            string userPath = Console.ReadLine() + ".txt";
+            filePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),userPath);
+        }
+        static void FileCheck(string filePath)
+        {
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
-
-            //Create the file.
-            using (FileStream fs = File.Create(filePath))
-            {
-                for (int i = 0; i < information.Count; i++)
-                {
-                    AddText(fs, information[i].SuperBowlNumber.PadRight(20));
-                    AddText(fs, Convert.ToString(information[i].Date.Year).PadRight(20));
-                    AddText(fs, "\r\n");
-                    /*AddText(fs, "This is some more text,");
-                    AddText(fs, "\r\nand this is on a new line");
-                    AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");*/
-                }
-            }
-
+            
             //Open the stream and read it back.
-            using (FileStream fs = File.OpenRead(filePath))
+            /*using (FileStream fs = File.OpenRead(filePath))
             {
                 byte[] b = new byte[1024];
                 UTF8Encoding temp = new UTF8Encoding(true);
@@ -62,9 +51,49 @@ namespace Project_Two
                 {
                     Console.WriteLine(temp.GetString(b));
                 }
+            }*/
+        }
+        public static void SuperBowlWinners(List<SuperBowl> information, string filePath)
+        {
+            //Create the file.
+            using (FileStream fs = File.Create(filePath))
+            {
+                AddText(fs, " | " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
+                    + " | " + CenterConsoleWrite(26, "Winning QB") + " | " + "\r\n");
+                AddText(fs, "  " + new string('-', 69) + "\r\n");
+                for (int i = 0; i < information.Count; i++)
+                {
+                    AddText(fs, " | " + CenterConsoleWrite(8, information[i].SuperBowlNumber) + " | ");
+                    AddText(fs, CenterConsoleWrite(4, Convert.ToString(information[i].Date.Year)) + " | ");
+                    AddText(fs, CenterConsoleWrite(20, information[i].WinningTeam) + " | ");
+                    AddText(fs, CenterConsoleWrite(26, information[i].WinningQB) + " | " + "\r\n");
+                    AddText(fs, "  " + new string('-', 69) + "\r\n");
+                    /*AddText(fs, "This is some more text,");
+                    AddText(fs, "\r\nand this is on a new line");
+                    AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");*/
+                }
             }
         }
-
+        public static string CenterConsoleWrite(int length, string text)
+        {
+            int stringLength = text.Length;
+            int buffer = (length - stringLength) / 2;
+            string spacer = "";
+            string newText;
+            for (int i = 0; i < buffer; i++)
+            {
+                spacer += " ";
+            }
+            if (stringLength % 2 == 0)
+            {
+                newText = (spacer + text + spacer);
+            }
+            else
+            {
+                newText = (" " + spacer + text + spacer);
+            }
+            return newText;
+        }
         private static void AddText(FileStream fs, string value)
         {
             byte[] info = new UTF8Encoding(true).GetBytes(value);
