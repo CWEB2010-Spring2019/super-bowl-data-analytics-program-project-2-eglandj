@@ -19,12 +19,14 @@ namespace Project_Two
                                            .ToList();
             Greeting(out string filePath);
             FileCheck(filePath, out FileStream fs);
-            SuperBowlWinners(information, filePath, fs);
+            SuperBowlWinners(information, filePath, ref fs);
+            fs.Close();
             /*foreach (SuperBowl bowl in information)
             {
                 Console.WriteLine(bowl.Date.Year);
                 Console.WriteLine(bowl.Attendance);
                 Console.WriteLine(bowl.WinningQB);
+                Console.WriteLine(bowl.WinningCoach);
             }
             Console.ReadKey();*/
         }
@@ -42,34 +44,24 @@ namespace Project_Two
                 File.Delete(filePath);
             }
             fs = File.Create(filePath);
-            //Open the stream and read it back.
-            /*using (FileStream fs = File.OpenRead(filePath))
-            {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
-                while (fs.Read(b, 0, b.Length) > 0)
-                {
-                    Console.WriteLine(temp.GetString(b));
-                }
-            }*/
         }
-        public static void SuperBowlWinners(List<SuperBowl> information, string filePath, FileStream fs)
+        public static void SuperBowlWinners(List<SuperBowl> information, string filePath, ref FileStream fs)
         {
             AddText(fs, " | " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
                 + " | " + CenterConsoleWrite(26, "Winning QB") + " | " + CenterConsoleWrite(20, "Winning Coach") + " | " + CenterConsoleWrite(26, "MVP") + " | " 
                 + CenterConsoleWrite(14, "Point Spread") + " | " + "\r\n");
-            AddText(fs, "  " + new string('-', 150) + "\r\n");
-            for (int i = 0; i < information.Count; i++)
+            AddText(fs, "  " + new string('-', 138) + "\r\n");
+            foreach (SuperBowl info in information)
             {
-                AddText(fs, " | " + CenterConsoleWrite(8, information[i].SuperBowlNumber) + " | ");
-                AddText(fs, CenterConsoleWrite(4, Convert.ToString(information[i].Date.Year)) + " | ");
-                AddText(fs, CenterConsoleWrite(20, information[i].WinningTeam) + " | ");
-                AddText(fs, CenterConsoleWrite(26, information[i].WinningQB) + " | ");
-                AddText(fs, CenterConsoleWrite(20, information[i].WinningCoach) + " | ");
-                AddText(fs, CenterConsoleWrite(26, information[i].MVP) + " | ");
-                AddText(fs, CenterConsoleWrite(14, Convert.ToString(information[i].PointSpread)) + " | ");
+                AddText(fs, " | " + CenterConsoleWrite(8, info.SuperBowlNumber) + " | ");
+                AddText(fs, CenterConsoleWrite(4, Convert.ToString(info.Date.Year)) + " | ");
+                AddText(fs, CenterConsoleWrite(20, info.WinningTeam) + " | ");
+                AddText(fs, CenterConsoleWrite(26, info.WinningQB) + " | ");
+                AddText(fs, CenterConsoleWrite(20, info.WinningCoach) + " | ");
+                AddText(fs, CenterConsoleWrite(26, info.MVP) + " | ");
+                AddText(fs, CenterConsoleWrite(14, Convert.ToString(info.PointSpread)) + " | ");
                 AddText(fs, "\r\n");
-                AddText(fs, "\r\n" + "  " + new string('-', 150) + "\r\n");
+                AddText(fs, "  " + new string('-', 138) + "\r\n");
                 /*AddText(fs, "This is some more text,");
                 AddText(fs, "\r\nand this is on a new line");
                 AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");*/
@@ -95,7 +87,8 @@ namespace Project_Two
                 {
                     try
                     {
-                        Convert.ToString(Convert.ToInt32(text));
+                        Convert.ToInt32(text);
+                        Convert.ToString(text);
                         newText = (spacer + "0" + text + spacer);
                     }
                     catch
@@ -107,7 +100,6 @@ namespace Project_Two
                 {
                     newText = (" " + spacer + text + spacer);
                 }
-                
             }
             return newText;
         }
