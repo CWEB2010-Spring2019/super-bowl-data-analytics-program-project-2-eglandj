@@ -16,6 +16,7 @@ namespace Project_Two
         public string LosingTeam { get; set; }
         public int LosingPoints { get; set; }
         public string MVP { get; set; }
+        public int PointSpread { get; set; }
         public string Stadium { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -36,6 +37,7 @@ namespace Project_Two
             superBowlInfo.LosingTeam = Convert.ToString(information[9]);
             superBowlInfo.LosingPoints = Convert.ToInt32(information[10]);
             superBowlInfo.MVP = Convert.ToString(information[11]);
+            superBowlInfo.PointSpread = Convert.ToInt32(information[6]) - Convert.ToInt32(information[10]);
             superBowlInfo.Stadium = Convert.ToString(information[12]);
             superBowlInfo.City = Convert.ToString(information[13]);
             superBowlInfo.State = Convert.ToString(information[14]);
