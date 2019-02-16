@@ -21,14 +21,6 @@ namespace Project_Two
             FileCheck(filePath, out FileStream fs);
             SuperBowlWinners(information, filePath, ref fs);
             fs.Close();
-            /*foreach (SuperBowl bowl in information)
-            {
-                Console.WriteLine(bowl.Date.Year);
-                Console.WriteLine(bowl.Attendance);
-                Console.WriteLine(bowl.WinningQB);
-                Console.WriteLine(bowl.WinningCoach);
-            }
-            Console.ReadKey();*/
         }
        static void Greeting(out string filePath)
         {
@@ -45,15 +37,17 @@ namespace Project_Two
             }
             fs = File.Create(filePath);
         }
-        public static void SuperBowlWinners(List<SuperBowl> information, string filePath, ref FileStream fs)
+        static void SuperBowlWinners(List<SuperBowl> information, string filePath, ref FileStream fs)
         {
-            AddText(fs, " | " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
+            AddText(fs, CenterConsoleWrite(138, "Super Bowl Winners") + "\r\n" + "\r\n");
+            AddText(fs, " " + new string('-', 138) + "\r\n");
+            AddText(fs, "| " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
                 + " | " + CenterConsoleWrite(26, "Winning QB") + " | " + CenterConsoleWrite(20, "Winning Coach") + " | " + CenterConsoleWrite(26, "MVP") + " | " 
                 + CenterConsoleWrite(14, "Point Spread") + " | " + "\r\n");
-            AddText(fs, "  " + new string('-', 138) + "\r\n");
+            AddText(fs, " " + new string('-', 138) + "\r\n");
             foreach (SuperBowl info in information)
             {
-                AddText(fs, " | " + CenterConsoleWrite(8, info.SuperBowlNumber) + " | ");
+                AddText(fs, "| " + CenterConsoleWrite(8, info.SuperBowlNumber) + " | ");
                 AddText(fs, CenterConsoleWrite(4, Convert.ToString(info.Date.Year)) + " | ");
                 AddText(fs, CenterConsoleWrite(20, info.WinningTeam) + " | ");
                 AddText(fs, CenterConsoleWrite(26, info.WinningQB) + " | ");
@@ -61,10 +55,7 @@ namespace Project_Two
                 AddText(fs, CenterConsoleWrite(26, info.MVP) + " | ");
                 AddText(fs, CenterConsoleWrite(14, Convert.ToString(info.PointSpread)) + " | ");
                 AddText(fs, "\r\n");
-                AddText(fs, "  " + new string('-', 138) + "\r\n");
-                /*AddText(fs, "This is some more text,");
-                AddText(fs, "\r\nand this is on a new line");
-                AddText(fs, "\r\n\r\nThe following is a subset of characters:\r\n");*/
+                AddText(fs, " " + new string('-', 138) + "\r\n");
             }
         }
         public static string CenterConsoleWrite(int length, string text)
