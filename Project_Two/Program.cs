@@ -15,11 +15,13 @@ namespace Project_Two
             **/
             List<SuperBowl> information = File.ReadAllLines(@"..\..\..\Super_Bowl_Project.csv")
                                            .Skip(1)
-                                           .Select(v => SuperBowl.FromCsv(v))
+                                           .Select(superbowl => new SuperBowl(superbowl))
                                            .ToList();
+            
             Greeting(out string filePath);
             FileCheck(filePath, out FileStream fs);
-            SuperBowlWinners(information, filePath, ref fs);
+            SuperBowlWinners(information, ref fs);
+            TopFiveBowls(information, filePath, ref fs);
             fs.Close();
         }
        static void Greeting(out string filePath)
@@ -37,14 +39,15 @@ namespace Project_Two
             }
             fs = File.Create(filePath);
         }
-        static void SuperBowlWinners(List<SuperBowl> information, string filePath, ref FileStream fs)
+        static void SuperBowlWinners(List<SuperBowl> information, ref FileStream fs)
         {
-            AddText(fs, CenterConsoleWrite(138, "Super Bowl Winners") + "\r\n" + "\r\n");
-            AddText(fs, " " + new string('-', 138) + "\r\n");
+            int length = 138;
+            AddText(fs, CenterConsoleWrite(length, "Super Bowl Winners") + "\r\n" + "\r\n");
+            AddText(fs, " " + new string('-', length) + "\r\n");
             AddText(fs, "| " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
                 + " | " + CenterConsoleWrite(26, "Winning QB") + " | " + CenterConsoleWrite(20, "Winning Coach") + " | " + CenterConsoleWrite(26, "MVP") + " | " 
                 + CenterConsoleWrite(14, "Point Spread") + " | " + "\r\n");
-            AddText(fs, " " + new string('-', 138) + "\r\n");
+            AddText(fs, " " + new string('=', length) + "\r\n");
             foreach (SuperBowl info in information)
             {
                 AddText(fs, "| " + CenterConsoleWrite(8, info.SuperBowlNumber) + " | ");
@@ -55,7 +58,31 @@ namespace Project_Two
                 AddText(fs, CenterConsoleWrite(26, info.MVP) + " | ");
                 AddText(fs, CenterConsoleWrite(14, Convert.ToString(info.PointSpread)) + " | ");
                 AddText(fs, "\r\n");
-                AddText(fs, " " + new string('-', 138) + "\r\n");
+                AddText(fs, " " + new string('-', length) + "\r\n");
+            }
+            AddText(fs, "\r\n");
+        }
+        static void TopFiveBowls(List<SuperBowl> information, string filePath, ref FileStream fs)
+        {
+            int length = 138;
+            AddText(fs, CenterConsoleWrite(length, "Top 5 Attended Super Bowls") + "\r\n" + "\r\n");
+            AddText(fs, " " + new string('-', length) + "\r\n");
+            AddText(fs, "| " + CenterConsoleWrite(8, "SB #") + " | " + CenterConsoleWrite(4, "Year") + " | " + CenterConsoleWrite(20, "Winning Team")
+                + " | " + CenterConsoleWrite(26, "Losing Team") + " | " + CenterConsoleWrite(20, "City") + " | " + CenterConsoleWrite(22, "State") + " | "
+                + CenterConsoleWrite(18, "Stadium") + " | " + "\r\n");
+            AddText(fs, " " + new string('=', length) + "\r\n");
+            IEnumerable<SuperBowl> attendenceList = information.OrderByDescending(bowl => bowl.Attendance).Take(5);
+            foreach (SuperBowl info in attendenceList)
+            {
+                AddText(fs, "| " + CenterConsoleWrite(8, info.SuperBowlNumber) + " | ");
+                AddText(fs, CenterConsoleWrite(4, Convert.ToString(info.Date.Year)) + " | ");
+                AddText(fs, CenterConsoleWrite(20, info.WinningTeam) + " | ");
+                AddText(fs, CenterConsoleWrite(26, info.LosingTeam) + " | ");
+                AddText(fs, CenterConsoleWrite(20, info.City) + " | ");
+                AddText(fs, CenterConsoleWrite(22, info.State) + " | ");
+                AddText(fs, CenterConsoleWrite(18, info.Stadium) + " | ");
+                AddText(fs, "\r\n");
+                AddText(fs, " " + new string('-', length) + "\r\n");
             }
         }
         public static string CenterConsoleWrite(int length, string text)
