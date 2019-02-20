@@ -74,6 +74,7 @@ namespace Project_Two
                 + "|" + CenterConsoleWrite(26, "Losing Team") + "|" + CenterConsoleWrite(20, "City") + "|" + CenterConsoleWrite(22, "State") + "|"
                 + CenterConsoleWrite(18, "Stadium") + "|" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
+
             IEnumerable<SuperBowl> attendenceList = information.OrderByDescending(bowl => bowl.Attendance).Take(5);
             foreach (SuperBowl info in attendenceList)
             {
@@ -171,10 +172,12 @@ namespace Project_Two
                 group info by info.LosingTeam into LosingTeamGroups
                 orderby LosingTeamGroups.Count() descending
                 select LosingTeamGroups;
+
             IEnumerable<SuperBowl> pointSpread = information.OrderByDescending(bowl => bowl.PointSpread).Take(1);
             double AverageValue = information.Average(info => info.Attendance);
 
             int length = 124;
+            AddText(fs, CenterConsoleWrite(length, "Fun Facts") + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
             AddText(fs, "|" + CenterConsoleWrite(42, "Coach with most SB wins") + "|" + CenterConsoleWrite(40, WinningCoach.First().First().WinningCoach) + "|" +
                 CenterConsoleWrite(40, WinningCoach.First().Count().ToString()) + "|" + "\r\n");
@@ -192,9 +195,8 @@ namespace Project_Two
                 CenterConsoleWrite(30, pointSpread.First().Date.Year.ToString()) + "|" + 
                 CenterConsoleWrite(30, pointSpread.First().PointSpread.ToString()) + " |" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
-            AddText(fs, "|" + CenterConsoleWrite(62, "Average Super Bowl Attendance") + "|" + CenterConsoleWrite(60, AverageValue.ToString("N0")) + " |" + "\r\n");
+            AddText(fs, "|" + CenterConsoleWrite(62, "Average Super Bowl Attendance") + "|" + CenterConsoleWrite(60, AverageValue.ToString("n0")) + " |" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
-
         }
         public static string CenterConsoleWrite(int length, string text)
         {
