@@ -105,21 +105,24 @@ namespace Project_Two
             AddText(fs, CenterConsoleWrite(length, "Most Hosted Super Bowls") + "\r\n");
             AddText(fs, " " + new string('-', length) + "\r\n");
             AddText(fs, "|" + CenterConsoleWrite(30, "City") + "|" + CenterConsoleWrite(30, "State") + "|" + 
-                CenterConsoleWrite(30, "Stadium") + "|" + CenterConsoleWrite(30, "Hosted Super Bowls") + " |" + "\r\n");
+                CenterConsoleWrite(30, "Stadium") + "|" + CenterConsoleWrite(30, "Super Bowl Number") + " |" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
 
             var HostedGroup =
-                from info in information
+                (from info in information
                 group info by info.State into stateGroups
                 orderby stateGroups.Count() descending
-                select stateGroups;
+                select stateGroups).First();
 
-            AddText(fs, "|" + CenterConsoleWrite(30, HostedGroup.First().First().City) + "|");
-            AddText(fs, CenterConsoleWrite(30, HostedGroup.First().First().State) + "|");
-            AddText(fs, CenterConsoleWrite(30, HostedGroup.First().First().Stadium) + "|");
-            AddText(fs, CenterConsoleWrite(30, HostedGroup.First().Count().ToString()) + " |");
-            AddText(fs, "\r\n");
-            AddText(fs, " " + new string('-', length) + "\r\n");
+            foreach (var info in HostedGroup)
+            {
+                AddText(fs, "|" + CenterConsoleWrite(30, info.City) + "|");
+                AddText(fs, CenterConsoleWrite(30, info.State) + "|");
+                AddText(fs, CenterConsoleWrite(30, info.Stadium) + "|");
+                AddText(fs, CenterConsoleWrite(30, info.SuperBowlNumber) + " |");
+                AddText(fs, "\r\n");
+                AddText(fs, " " + new string('-', length) + "\r\n");
+            }
             AddText(fs, "\r\n");
         }
         static void MVP_Winners(List<SuperBowl> information, string filePath, ref FileStream fs)
