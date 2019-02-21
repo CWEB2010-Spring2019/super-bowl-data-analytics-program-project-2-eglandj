@@ -25,6 +25,7 @@ namespace Project_Two
             MVP_Winners(information, filePath, ref fs);
             RandomQuestions(information, filePath, ref fs);
             fs.Close();
+            
         }
        static void Greeting(out string filePath)
        {
@@ -32,7 +33,6 @@ namespace Project_Two
             string userPath = Console.ReadLine() + ".txt";
             filePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Desktop),userPath);
-            Console.WriteLine("Your new text file has been created on your desktop");
        }
         static void FileCheck(string filePath, out FileStream fs)
         {
@@ -40,7 +40,16 @@ namespace Project_Two
             {
                 File.Delete(filePath);
             }
-            fs = File.Create(filePath);
+            try
+            {
+                fs = File.Create(filePath);
+                Console.WriteLine("Your new text file has been created on your desktop.");
+            }
+            catch
+            {
+                Console.WriteLine("That was an invalid option...\nA file with the default name Superbowl.txt has been added to your desktop.");
+                fs = File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Superbowl.txt"));
+            }
         }
         static void SuperBowlWinners(List<SuperBowl> information, ref FileStream fs)
         {
