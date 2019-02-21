@@ -79,20 +79,20 @@ namespace Project_Two
             int length = 124;
             AddText(fs, CenterConsoleWrite(length, "Top 5 Attended Super Bowls") + "\r\n");
             AddText(fs, " " + new string('-', length) + "\r\n");
-            AddText(fs, "|" + CenterConsoleWrite(8, "SB #") + "|" + CenterConsoleWrite(4, "Year") + "|" + CenterConsoleWrite(20, "Winning Team")
-                + "|" + CenterConsoleWrite(26, "Losing Team") + "|" + CenterConsoleWrite(20, "City") + "|" + CenterConsoleWrite(22, "State") + "|"
+            AddText(fs, "|" + CenterConsoleWrite(12, "Attendance") + "|" + CenterConsoleWrite(6, "Year") + "|" + CenterConsoleWrite(20, "Winning Team")
+                + "|" + CenterConsoleWrite(26, "Losing Team") + "|" + CenterConsoleWrite(18, "City") + "|" + CenterConsoleWrite(18, "State") + "|"
                 + CenterConsoleWrite(18, "Stadium") + "|" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
 
             IEnumerable<SuperBowl> attendenceList = information.OrderByDescending(bowl => bowl.Attendance).Take(5);
             foreach (SuperBowl info in attendenceList)
             {
-                AddText(fs, "|" + CenterConsoleWrite(8, info.SuperBowlNumber) + "|");
-                AddText(fs, CenterConsoleWrite(4, Convert.ToString(info.Date.Year)) + "|");
+                AddText(fs, "|" + CenterConsoleWrite(12, info.Attendance.ToString("n0")) + "|");
+                AddText(fs, CenterConsoleWrite(6, Convert.ToString(info.Date.Year)) + "|");
                 AddText(fs, CenterConsoleWrite(20, info.WinningTeam) + "|");
                 AddText(fs, CenterConsoleWrite(26, info.LosingTeam) + "|");
-                AddText(fs, CenterConsoleWrite(20, info.City) + "|");
-                AddText(fs, CenterConsoleWrite(22, info.State) + "|");
+                AddText(fs, CenterConsoleWrite(18, info.City) + "|");
+                AddText(fs, CenterConsoleWrite(18, info.State) + "|");
                 AddText(fs, CenterConsoleWrite(18, info.Stadium) + "|");
                 AddText(fs, "\r\n");
                 AddText(fs, " " + new string('-', length) + "\r\n");
