@@ -56,19 +56,19 @@ namespace Project_Two
             int length = 124;
             AddText(fs, "\r\n" + CenterConsoleWrite(length, "Super Bowl Winners") + "\r\n");
             AddText(fs, " " + new string('-', length) + "\r\n");
-            AddText(fs, "|" + CenterConsoleWrite(8, "SB #") + "|" + CenterConsoleWrite(4, "Year") + "|" + CenterConsoleWrite(20, "Winning Team")
-                + "|" + CenterConsoleWrite(26, "Winning QB") + "|" + CenterConsoleWrite(20, "Winning Coach") + "|" + CenterConsoleWrite(26, "MVP") + "|" 
-                + CenterConsoleWrite(14, "Point Spread") + "|" + "\r\n");
+            AddText(fs, "|" + CenterConsoleWrite(8, "SB #") + "|" + CenterConsoleWrite(6, "Year") + "|" + CenterConsoleWrite(22, "Winning Team")
+                + "|" + CenterConsoleWrite(28, "Winning QB") + "|" + CenterConsoleWrite(20, "Winning Coach") + "|" + CenterConsoleWrite(26, "MVP") + "|" 
+                + CenterConsoleWrite(8, "Spread") + "|" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
             foreach (SuperBowl info in information)
             {
                 AddText(fs, "|" + CenterConsoleWrite(8, info.SuperBowlNumber) + "|");
-                AddText(fs, CenterConsoleWrite(4, Convert.ToString(info.Date.Year)) + "|");
-                AddText(fs, CenterConsoleWrite(20, info.WinningTeam) + "|");
-                AddText(fs, CenterConsoleWrite(26, info.WinningQB) + "|");
+                AddText(fs, CenterConsoleWrite(6, Convert.ToString(info.Date.Year)) + "|");
+                AddText(fs, CenterConsoleWrite(22, info.WinningTeam) + "|");
+                AddText(fs, CenterConsoleWrite(28, info.WinningQB) + "|");
                 AddText(fs, CenterConsoleWrite(20, info.WinningCoach) + "|");
                 AddText(fs, CenterConsoleWrite(26, info.MVP) + "|");
-                AddText(fs, CenterConsoleWrite(14, Convert.ToString(info.PointSpread)) + "|");
+                AddText(fs, CenterConsoleWrite(8, Convert.ToString(info.PointSpread)) + "|");
                 AddText(fs, "\r\n");
                 AddText(fs, " " + new string('-', length) + "\r\n");
             }
@@ -102,10 +102,10 @@ namespace Project_Two
         static void MostHostedSuperbowls(List<SuperBowl> information, string filePath, ref FileStream fs)
         {
             int length = 124;
-            AddText(fs, CenterConsoleWrite(length, "Most Hosted Super Bowls") + "\r\n");
+            AddText(fs, CenterConsoleWrite(length, "State With The Most Hosted Super Bowls") + "\r\n");
             AddText(fs, " " + new string('-', length) + "\r\n");
-            AddText(fs, "|" + CenterConsoleWrite(30, "City") + "|" + CenterConsoleWrite(30, "State") + "|" + 
-                CenterConsoleWrite(30, "Stadium") + "|" + CenterConsoleWrite(30, "Super Bowl Number") + " |" + "\r\n");
+            AddText(fs, "|" + CenterConsoleWrite(20, "Super Bowl Number") + "|" + CenterConsoleWrite(10, "Year") + "|" + CenterConsoleWrite(30, "City") + "|" + 
+                CenterConsoleWrite(30, "State") + "|" +  CenterConsoleWrite(30, "Stadium") + "|" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
 
             var HostedGroup =
@@ -113,13 +113,18 @@ namespace Project_Two
                 group info by info.State into stateGroups
                 orderby stateGroups.Count() descending
                 select stateGroups).First();
+            var SortedHost =
+                from city in HostedGroup
+                orderby city.City
+                select city;
 
-            foreach (var info in HostedGroup)
+            foreach (var city in SortedHost)
             {
-                AddText(fs, "|" + CenterConsoleWrite(30, info.City) + "|");
-                AddText(fs, CenterConsoleWrite(30, info.State) + "|");
-                AddText(fs, CenterConsoleWrite(30, info.Stadium) + "|");
-                AddText(fs, CenterConsoleWrite(30, info.SuperBowlNumber) + " |");
+                AddText(fs, "|" + CenterConsoleWrite(20, city.SuperBowlNumber) + "|");
+                AddText(fs, CenterConsoleWrite(10, city.Date.Year.ToString()) + "|");
+                AddText(fs, CenterConsoleWrite(30, city.City) + "|");
+                AddText(fs, CenterConsoleWrite(30, city.State) + "|");
+                AddText(fs, CenterConsoleWrite(30, city.Stadium) + "|");
                 AddText(fs, "\r\n");
                 AddText(fs, " " + new string('-', length) + "\r\n");
             }
