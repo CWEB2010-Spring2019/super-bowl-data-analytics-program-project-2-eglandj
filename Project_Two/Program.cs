@@ -13,10 +13,12 @@ namespace Project_Two
             /**Your application should allow the end user to pass end a file path for output 
             * or guide them through generating the file.
             **/
-            List<SuperBowl> information = File.ReadAllLines(@"..\..\..\Super_Bowl_Project.csv")
-                                           .Skip(1)
-                                           .Select(superbowl => new SuperBowl(superbowl))
-                                           .ToList();
+            List<SuperBowl> information = File.ReadAllLines(@"..\..\..\Super_Bowl_Project.csv")//Reading all lines from the csv file
+                                           .Skip(1)//Skips the first line in the csv file
+                                           .Select(superbowl => new SuperBowl(superbowl))//Creating new objects for the read data
+                                           .ToList();//Putting the objects into a list
+            //Invoking methods and passing in the 
+            //specific parameters
             Greeting(out string filePath);
             FileCheck(filePath, out FileStream fs);
             SuperBowlWinners(information, ref fs);
@@ -24,30 +26,30 @@ namespace Project_Two
             MostHostedSuperbowls(information, filePath, ref fs);
             MVP_Winners(information, filePath, ref fs);
             RandomQuestions(information, filePath, ref fs);
-            fs.Close();
+            fs.Close();//Closing the file after it has been written too
             
         }
        static void Greeting(out string filePath)
        {
             Console.WriteLine("Type a name for the text file you will be creating.\nDO NOT add an extension behind it");
-            string userPath = Console.ReadLine() + ".txt";
-            filePath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),userPath);
+            string userPath = Console.ReadLine() + ".txt";//Getting username for file and making in a text file
+            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),userPath);//Creating a path for the file to be placed on desktop
        }
         static void FileCheck(string filePath, out FileStream fs)
         {
             if (File.Exists(filePath))
             {
-                File.Delete(filePath);
+                File.Delete(filePath);//Deletes the file if it already exists
             }
             try
             {
-                fs = File.Create(filePath);
+                fs = File.Create(filePath);//Creates the file path if user enters a valid name option
                 Console.WriteLine("Your new text file has been created on your desktop.");
             }
             catch
             {
-                Console.WriteLine("That was an invalid option...\nA file with the default name Superbowl.txt has been added to your desktop.");
+                //Creating a default file name for the user if they entered an invalid option
+                Console.WriteLine("That was an invalid option...\nA file with the default name Superbowl has been added to your desktop.");
                 fs = File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Superbowl.txt"));
             }
         }
@@ -109,12 +111,13 @@ namespace Project_Two
             AddText(fs, " " + new string('=', length) + "\r\n");
 
             var HostedGroup =
-                (from info in information
+                from info in information
                 group info by info.State into stateGroups
                 orderby stateGroups.Count() descending
-                select stateGroups).First();
+                select stateGroups;
+
             var SortedHost =
-                from city in HostedGroup
+                from city in HostedGroup.First()
                 orderby city.City
                 select city;
 
@@ -144,22 +147,20 @@ namespace Project_Two
                 from info in information
                 group info by info.MVP into MVP_Groups
                 orderby MVP_Groups.Count() descending
+                where MVP_Groups.Count() > 1
                 select MVP_Groups;
             
             foreach (var groupOfMVP in MVP)
             {
-                if (groupOfMVP.Count() > 1)
+                foreach (var info in groupOfMVP)
                 {
-                    foreach (var info in groupOfMVP)
-                    {
-                        AddText(fs, "|" + CenterConsoleWrite(12, info.SuperBowlNumber) + "|");
-                        AddText(fs, CenterConsoleWrite(12, Convert.ToString(info.Date.Year)) + "|");
-                        AddText(fs, CenterConsoleWrite(32, info.MVP) + "|");
-                        AddText(fs, CenterConsoleWrite(32, info.WinningTeam) + "|");
-                        AddText(fs, CenterConsoleWrite(32, info.LosingTeam) + "|");
-                        AddText(fs, "\r\n");
-                        AddText(fs, " " + new string('-', length) + "\r\n");
-                    }
+                    AddText(fs, "|" + CenterConsoleWrite(12, info.SuperBowlNumber) + "|");
+                    AddText(fs, CenterConsoleWrite(12, Convert.ToString(info.Date.Year)) + "|");
+                    AddText(fs, CenterConsoleWrite(32, info.MVP) + "|");
+                    AddText(fs, CenterConsoleWrite(32, info.WinningTeam) + "|");
+                    AddText(fs, CenterConsoleWrite(32, info.LosingTeam) + "|");
+                    AddText(fs, "\r\n");
+                    AddText(fs, " " + new string('-', length) + "\r\n");
                 }
             }
             AddText(fs, "\r\n");
@@ -189,14 +190,14 @@ namespace Project_Two
                 group info by info.LosingTeam into LosingTeamGroups
                 orderby LosingTeamGroups.Count() descending
                 select LosingTeamGroups;
-
+            
             IEnumerable<SuperBowl> pointSpread = information.OrderByDescending(bowl => bowl.PointSpread).Take(1);
             double AverageValue = information.Average(info => info.Attendance);
 
             int length = 124;
             AddText(fs, CenterConsoleWrite(length, "Fun Facts") + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
-            AddText(fs, "|" + CenterConsoleWrite(42, "Coach with most SB wins") + "|" + CenterConsoleWrite(40, WinningCoach.First().First().WinningCoach) + "|" +
+            AddText(fs, "|" + CenterConsoleWrite(42, "Coach with most SB wins") + "|" + CenterConsoleWrite(40, WinningCoach.First().Key) + "|" +
                 CenterConsoleWrite(40, WinningCoach.First().Count().ToString()) + "|" + "\r\n");
             AddText(fs, " " + new string('=', length) + "\r\n");
             AddText(fs, "|" + CenterConsoleWrite(42, "Team with most SB wins") + "|" + CenterConsoleWrite(40, WinningTeam.First().First().WinningTeam) + "|" +
